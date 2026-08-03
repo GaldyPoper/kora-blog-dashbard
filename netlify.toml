@@ -1,0 +1,8 @@
+[build]
+  # SvelteKit's adapter-netlify emits the SSR function + static assets here.
+  command = "pnpm build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "22"
+
