@@ -1,7 +1,8 @@
 import tailwindcss from '@tailwindcss/vite';
 import adapter from '@sveltejs/adapter-auto';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { svelteTesting } from '@testing-library/svelte/vite';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
 	plugins: [
@@ -17,6 +18,13 @@ export default defineConfig({
 			// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 			adapter: adapter()
-		})
-	]
+		}),
+		// Resolves the browser build of Svelte and auto-cleans the DOM between tests.
+		svelteTesting()
+	],
+	test: {
+		globals: true,
+		environment: 'jsdom',
+		include: ['src/**/*.{test,spec}.{js,ts}']
+	}
 });
