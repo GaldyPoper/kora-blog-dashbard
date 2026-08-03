@@ -1,0 +1,10 @@
+set -e
+
+# 1. ESLint + Prettier on staged files
+
+pnpm exec lint-staged
+
+# 2. Other checks on whole project
+
+pnpm run check
+pnpm run typecheck

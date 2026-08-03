@@ -6,15 +6,15 @@ Everything is deterministic (seeded). Re-running `python3 _generate.py` produces
 
 ## Files
 
-| File | What it is | Rows |
-| --- | --- | --- |
-| `posts.json` | Blog posts with `translations.{en,de}` | 20 |
-| `items.json` | Dashboard rows (campaigns) | 220 |
-| `users.json` | Demo login accounts | 3 |
-| `tags.json` | Tag taxonomy with localized labels | 8 |
-| `i18n.en.json` / `i18n.de.json` | UI string dictionaries | — |
-| `schemas.json` | Informal shape reference for each entity | — |
-| `_generate.py` | The generator. Edit + re-run if you want more rows. | — |
+| File                            | What it is                                          | Rows |
+| ------------------------------- | --------------------------------------------------- | ---- |
+| `posts.json`                    | Blog posts with `translations.{en,de}`              | 20   |
+| `items.json`                    | Dashboard rows (campaigns)                          | 220  |
+| `users.json`                    | Demo login accounts                                 | 3    |
+| `tags.json`                     | Tag taxonomy with localized labels                  | 8    |
+| `i18n.en.json` / `i18n.de.json` | UI string dictionaries                              | —    |
+| `schemas.json`                  | Informal shape reference for each entity            | —    |
+| `_generate.py`                  | The generator. Edit + re-run if you want more rows. | —    |
 
 ## Demo credentials
 
