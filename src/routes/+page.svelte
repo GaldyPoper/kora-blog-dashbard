@@ -12,8 +12,8 @@
 	</header>
 
 	<p class="text-sm text-foreground/70">
-		Fetched via MSW and validated with Zod: {data.posts.length} posts, {data.items.length} items, {data
-			.users.length} users.
+		Served by the SvelteKit API and validated with Zod: {data.posts.length} posts, {data.items
+			.length} items, {data.users.length} users.
 	</p>
 
 	<section class="space-y-3">

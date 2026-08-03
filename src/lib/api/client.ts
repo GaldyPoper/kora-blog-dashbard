@@ -1,18 +1,10 @@
 import { z } from 'zod';
-import { PUBLIC_API_BASE_URL } from '$env/static/public';
 import { postSchema, itemSchema, userSchema, type Post, type Item, type User } from '$lib/schemas';
 
 /**
- * Base URL of the API, from `PUBLIC_API_BASE_URL` (see `.env`). Locally this is
- * the MSW-mocked origin — MSW intercepts these requests in both the browser and
- * Node, so nothing hits the network, but the code fetches exactly as it would
- * against a real API. Override the env var per environment when deploying.
- */
-export const API_BASE_URL = PUBLIC_API_BASE_URL;
-
-/**
- * Fetches a collection endpoint and validates the response at the boundary.
- * The API response is untrusted, so it's parsed as `unknown` through the schema.
+ * Fetches a same-origin API endpoint and validates the response. Even though
+ * these are our own routes, `response.json()` is `any`, so parsing it through
+ * the schema is how we get a *typed*, trustworthy result at the fetch boundary.
  *
  * @throws if the response is not ok, or if the payload fails schema validation.
  */
@@ -21,7 +13,7 @@ async function fetchCollection<T extends z.ZodType>(
 	schema: T,
 	fetchFn: typeof fetch = fetch
 ): Promise<z.infer<T>[]> {
-	const response = await fetchFn(`${API_BASE_URL}${endpoint}`);
+	const response = await fetchFn(endpoint);
 	if (!response.ok) {
 		throw new Error(`GET ${endpoint} failed with status ${response.status}.`);
 	}
@@ -40,13 +32,13 @@ async function fetchCollection<T extends z.ZodType>(
 
 /**
  * Each accessor optionally takes a `fetch` implementation — pass SvelteKit's
- * `fetch` from a `load` function; it defaults to the global `fetch` elsewhere.
+ * `fetch` from a `load` function so relative URLs resolve on the server too.
  */
 export const getPosts = (fetchFn?: typeof fetch): Promise<Post[]> =>
-	fetchCollection('/posts', postSchema, fetchFn);
+	fetchCollection('/api/posts', postSchema, fetchFn);
 
 export const getItems = (fetchFn?: typeof fetch): Promise<Item[]> =>
-	fetchCollection('/items', itemSchema, fetchFn);
+	fetchCollection('/api/items', itemSchema, fetchFn);
 
 export const getUsers = (fetchFn?: typeof fetch): Promise<User[]> =>
-	fetchCollection('/users', userSchema, fetchFn);
+	fetchCollection('/api/users', userSchema, fetchFn);
