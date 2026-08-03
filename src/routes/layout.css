@@ -1,1 +1,126 @@
 @import 'tailwindcss';
+
+@custom-variant dark (&:is([data-theme='dark'] *));
+
+@theme {
+	/* Breakpoints */
+	--breakpoint-xs: 375px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1440px;
+}
+
+:root {
+	--kora-container-padding: 20px;
+	--kora-max-width: 1280px;
+
+	@media (width >= theme(--breakpoint-xl)) {
+		--kora-container-padding: 80px;
+	}
+
+	/* Colors */
+	--color-background: #f1f3f5;
+	--color-foreground: #343a40;
+}
+
+[data-theme='dark']:root {
+	--color-background: #343a40;
+	--color-foreground: #f1f3f5;
+}
+
+@theme inline {
+	/* Colors */
+	--color-background: var(--color-background);
+	--color-foreground: var(--color-foreground);
+}
+
+@utility kora-grid-container {
+	@apply grid grid-cols-[1fr_var(--kora-container-padding)_minmax(0,var(--kora-max-width))_var(--kora-container-padding)_1fr];
+}
+
+/* Use this to make element full window width */
+@utility kora-container-full {
+	@apply col-start-1 -col-end-1;
+}
+
+/* Use this to make element be inside the container (padding-left and padding-right) */
+@utility kora-container-inner {
+	@apply col-span-1 col-start-3;
+}
+
+/* Typography utility classes */
+@utility heading-1 {
+	@apply text-6xl leading-18 font-bold;
+}
+
+@utility heading-2 {
+	@apply text-5xl leading-14 font-bold;
+}
+
+@utility heading-3 {
+	@apply text-3xl leading-10 font-bold;
+}
+
+@utility heading-4 {
+	@apply text-2xl leading-8 font-bold;
+}
+
+@utility heading-5 {
+	@apply text-xl leading-7 font-medium;
+}
+
+@utility paragraph-s {
+	@apply text-xs leading-4.5 font-normal;
+}
+
+@utility paragraph-s-strong {
+	@apply text-xs leading-4.5 font-bold;
+}
+
+@utility paragraph {
+	@apply text-base leading-6 font-normal;
+}
+
+@utility paragraph-strong {
+	@apply text-base leading-6 font-bold;
+}
+
+@utility btn-label-s {
+	@apply text-sm leading-4 font-bold;
+}
+
+@utility btn-label {
+	@apply text-base leading-5 font-bold;
+}
+
+@utility btn-label-l {
+	@apply text-lg leading-6 font-bold;
+}
+
+body {
+	@apply bg-background text-foreground;
+}
+
+h1 {
+	@apply heading-1;
+}
+
+h2 {
+	@apply heading-2;
+}
+
+h3 {
+	@apply heading-3;
+}
+
+h4 {
+	@apply heading-4;
+}
+
+h5 {
+	@apply heading-5;
+}
+
+p {
+	@apply paragraph;
+}
