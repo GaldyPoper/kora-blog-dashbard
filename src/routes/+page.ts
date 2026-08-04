@@ -1,15 +1,9 @@
-import { getPosts, getItems, getUsers } from '$lib/api/client';
+import { redirect } from '@sveltejs/kit';
+import { defaultLocale, localizePath } from '$lib/i18n';
 import type { PageLoad } from './$types';
 
-// Universal load: on the initial (server) render SvelteKit calls the /api routes
-// directly; on client navigations it fetches them over HTTP. Each response is
-// Zod-validated inside the client before it reaches here.
-export const load: PageLoad = async ({ fetch }) => {
-	const [posts, items, users] = await Promise.all([
-		getPosts(fetch),
-		getItems(fetch),
-		getUsers(fetch)
-	]);
-
-	return { posts, items, users };
+// The locale is a required URL segment, so the bare "/" has no page of its own —
+// send visitors to the default-locale home.
+export const load: PageLoad = () => {
+	redirect(307, localizePath(defaultLocale, ''));
 };
