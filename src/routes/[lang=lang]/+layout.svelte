@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { locales, defaultLocale, stripLocale, localizePath } from '$lib/i18n';
 	import type { LayoutData } from './$types';
+	import { Footer, Header } from '$lib/components/composites';
 
 	let { data, children }: { data: LayoutData; children: import('svelte').Snippet } = $props();
 
@@ -33,4 +34,8 @@
 	/>
 </svelte:head>
 
-{@render children()}
+<Header />
+<main class="kora-grid-container min-h-[80vh]">
+	{@render children()}
+</main>
+<Footer />

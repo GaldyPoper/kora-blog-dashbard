@@ -19,19 +19,96 @@
 	}
 
 	/* Colors */
-	--color-background: #f1f3f5;
-	--color-foreground: #343a40;
+	--bg: #fafaf9;
+	--bg-elev: #ffffff;
+	--bg-soft: #f4f4f3;
+	--fg: #0c0c14;
+	--fg-2: #2b2b3a;
+	--muted: #6b6b7b;
+	--border: #e7e7e4;
+	--border-strong: #d4d4d0;
+	--accent: #6d28d9;
+	--accent-2: #ec4899;
+	--accent-soft: #f5f3ff;
+	--accent-ink: #4c1d95;
+	--warn-bg: #fffbeb;
+	--warn-border: #fbbf24;
+	--good-bg: #f0fdf4;
+	--good-border: #86efac;
+	--good-ink: #166534;
+	--code-bg: #0d0d18;
+	--code-fg: #e6e6f0;
+
+	/* Shadows */
+	--shadow-sm: 0 1px 2px rgba(12, 12, 20, 0.04), 0 1px 1px rgba(12, 12, 20, 0.03);
+	--shadow-md: 0 4px 12px rgba(12, 12, 20, 0.06), 0 1px 2px rgba(12, 12, 20, 0.04);
+	--shadow-lg: 0 12px 32px rgba(12, 12, 20, 0.08), 0 2px 6px rgba(12, 12, 20, 0.04);
+
+	/* Radii */
+	--radius: 12px;
+	--radius-sm: 8px;
+	--radius-lg: 18px;
 }
 
 [data-theme='dark']:root {
-	--color-background: #343a40;
-	--color-foreground: #f1f3f5;
+	/* Colors */
+	--bg: #07070c;
+	--bg-elev: #101019;
+	--bg-soft: #14141f;
+	--fg: #f4f4f8;
+	--fg-2: #d6d6e0;
+	--muted: #8c8ca0;
+	--border: #20202d;
+	--border-strong: #2c2c3d;
+	--accent: #a78bfa;
+	--accent-2: #f472b6;
+	--accent-soft: #1a1530;
+	--accent-ink: #c4b5fd;
+	--warn-bg: #2b2310;
+	--warn-border: #b08530;
+	--good-bg: #0e2218;
+	--good-border: #1f6a4a;
+	--good-ink: #86efac;
+	--code-bg: #05050a;
+	--code-fg: #e6e6f0;
+
+	/* Shadows */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+	--shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.5);
+	--shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 @theme inline {
 	/* Colors */
-	--color-background: var(--color-background);
-	--color-foreground: var(--color-foreground);
+	--color-bg: var(--bg);
+	--color-bg-elev: var(--bg-elev);
+	--color-bg-soft: var(--bg-soft);
+	--color-fg: var(--fg);
+	--color-fg-2: var(--fg-2);
+	--color-muted: var(--muted);
+	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
+	--color-accent: var(--accent);
+	--color-accent-2: var(--accent-2);
+	--color-accent-soft: var(--accent-soft);
+	--color-accent-ink: var(--accent-ink);
+	--color-warn-bg: var(--warn-bg);
+	--color-warn-border: var(--warn-border);
+	--color-good-bg: var(--good-bg);
+	--color-good-border: var(--good-border);
+	--color-good-ink: var(--good-ink);
+	--color-code-bg: var(--code-bg);
+	--color-code-fg: var(--code-fg);
+
+	/* Shadows */
+	--shadow-sm: var(--shadow-sm);
+	--shadow-md: var(--shadow-md);
+	--shadow-lg: var(--shadow-lg);
+
+	/* Radii */
+	--radius: var(--radius);
+	--radius-sm: var(--radius-sm);
+	--radius-lg: var(--radius-lg);
 }
 
 @utility kora-grid-container {
@@ -98,7 +175,7 @@
 }
 
 body {
-	@apply bg-background text-foreground;
+	@apply bg-bg text-fg;
 }
 
 h1 {

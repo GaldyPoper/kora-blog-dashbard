@@ -6,6 +6,7 @@
 	"nav.login": "Sign in",
 	"nav.dashboard": "Dashboard",
 	"nav.logout": "Sign out",
+	"language.select": "Language",
 	"home.hero.title": "Build a faster web, without the fight.",
 	"home.hero.subtitle": "A performance-first stack for teams that ship.",
 	"home.hero.cta": "Get started",
