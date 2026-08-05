@@ -10,8 +10,8 @@ vi.mock('$lib/i18n', () => ({ createTranslator: () => ({ t: tSpy }) }));
 vi.mock('$app/state', () => ({ page: { data: { locale: 'en' } } }));
 vi.mock('$app/paths', () => ({ resolve: resolveSpy }));
 vi.mock('$lib/components/primitives', async () => ({
+	Badge: (await import('./stubs/badge-stub.svelte')).default,
 	Button: (await import('./stubs/button-stub.svelte')).default,
-	Label: (await import('./stubs/label-stub.svelte')).default,
 	Price: (await import('./stubs/price-stub.svelte')).default
 }));
 

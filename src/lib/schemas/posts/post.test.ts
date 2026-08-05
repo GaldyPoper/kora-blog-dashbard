@@ -18,7 +18,8 @@ vi.mock('../common/common', async (importOriginal) => {
 		localeShema: actual.localeShema.refine((value) => {
 			localeSchemaSpy(value);
 			return true;
-		})
+		}),
+		paginatedSchema: actual.paginatedSchema
 	};
 });
 

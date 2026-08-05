@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { hexColorSchema, isoDateTimeSchema, localeShema } from '../common/common';
+import { hexColorSchema, isoDateTimeSchema, localeShema, paginatedSchema } from '../common/common';
 
 export const postTranslationSchema = z.object({
 	title: z.string(),
@@ -24,6 +24,9 @@ export const postSchema = z.object({
 	coverColor: hexColorSchema
 });
 
+export const paginatedPostsSchema = paginatedSchema(postSchema);
+
 export type PostTranslation = z.infer<typeof postTranslationSchema>;
 export type PostAuthor = z.infer<typeof postAuthorSchema>;
 export type Post = z.infer<typeof postSchema>;
+export type PaginatedPosts = z.infer<typeof paginatedPostsSchema>;

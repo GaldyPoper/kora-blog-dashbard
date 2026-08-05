@@ -19,3 +19,12 @@ export const usdAmountSchema = z.number().nonnegative();
 export const emailSchema = z.email();
 
 export type Locale = z.infer<typeof localeShema>;
+
+export function paginatedSchema<T extends z.ZodType>(item: T) {
+	return z.object({
+		items: z.array(item),
+		total: z.number().int().nonnegative(),
+		page: z.number().int().positive(),
+		perPage: z.number().int().positive()
+	});
+}

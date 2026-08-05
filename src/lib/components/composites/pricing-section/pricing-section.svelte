@@ -4,7 +4,7 @@
 	import { page } from '$app/state';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { twMerge } from 'tailwind-merge';
-	import { Button, Label, Price } from '$lib/components/primitives';
+	import { Badge, Button, Price } from '$lib/components/primitives';
 
 	type PricingSectionProps = HTMLAttributes<HTMLElement> & {
 		class?: string;
@@ -88,7 +88,7 @@
 					)}
 				>
 					{#if tier.featured}
-						<Label class="absolute -top-3 right-6">{t('pricing.badge.popular')}</Label>
+						<Badge class="absolute -top-3 right-6">{t('pricing.badge.popular')}</Badge>
 					{/if}
 
 					<div class="flex flex-col gap-2">

@@ -15,7 +15,7 @@
 	type="button"
 	aria-label="Toggle color theme"
 	class={twMerge(
-		'inline-flex size-8 cursor-pointer items-center justify-center rounded-full border text-foreground focus-visible:outline-2 focus-visible:outline-offset-2',
+		'text-foreground inline-flex size-8 cursor-pointer items-center justify-center rounded-full border focus-visible:outline-2 focus-visible:outline-offset-2',
 		className
 	)}
 	{...props}
