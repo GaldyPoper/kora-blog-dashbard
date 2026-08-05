@@ -28,9 +28,9 @@ describe('Header unit tests', () => {
 		expect(getByTestId('theme-switcher')).toBeTruthy();
 	});
 
-	it('renders a login button labelled via the translator', () => {
+	it('renders a login link labelled via the translator', () => {
 		const { getByRole } = render(Header);
-		expect(getByRole('button')).toBeTruthy();
+		expect(getByRole('link')).toBeTruthy();
 		expect(tSpy).toHaveBeenCalledWith('nav.login');
 	});
 

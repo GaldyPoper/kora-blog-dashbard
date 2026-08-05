@@ -16,6 +16,10 @@ vi.mock('../../../mocks/i18n.en.json', () => ({ default: enMock }));
 vi.mock('../../../mocks/i18n.de.json', () => ({ default: deMock }));
 
 describe('i18n translator unit tests', () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
 	it('translates a key for the given locale', () => {
 		expect(createTranslator('en').t('blog.title')).toBe(enMock['blog.title']);
 		expect(createTranslator('de').t('blog.title')).toBe(deMock['blog.title']);

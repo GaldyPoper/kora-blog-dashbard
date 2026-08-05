@@ -4,6 +4,8 @@
 	import { LanguageSwitcher, Nav, ThemeSwitcher } from '../';
 	import { createTranslator } from '$lib/i18n';
 	import { page } from '$app/state';
+	import { Button } from '$lib/components/primitives';
+	import { resolve } from '$app/paths';
 
 	type HeaderProps = HTMLAttributes<HTMLElement> & {
 		class?: string;
@@ -19,7 +21,11 @@
 	<section class="kora-container-inner flex items-center justify-between gap-3">
 		<Nav />
 		<div class="flex items-center gap-4">
-			<button>{t('nav.login')}</button>
+			<Button variant="outline" size="small" asChild>
+				{#snippet child({ props })}
+					<a href={resolve(`/${locale}/signin`)} {...props}>{t('nav.login')}</a>
+				{/snippet}
+			</Button>
 			<LanguageSwitcher />
 			<ThemeSwitcher />
 		</div>

@@ -5,8 +5,10 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
-		// Deploys to Netlify (serverless functions for SSR). See netlify.toml.
-		adapter: adapter()
+		adapter: adapter(),
+		prerender: {
+			crawl: false
+		}
 	}
 };
 

@@ -35,7 +35,7 @@
 </svelte:head>
 
 <Header />
-<main class="kora-grid-container min-h-[80vh]">
+<main>
 	{@render children()}
 </main>
 <Footer />

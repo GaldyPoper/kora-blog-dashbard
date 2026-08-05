@@ -28,6 +28,7 @@
 	--border: #e7e7e4;
 	--border-strong: #d4d4d0;
 	--accent: #6d28d9;
+	--accent-fg: #ffffff;
 	--accent-2: #ec4899;
 	--accent-soft: #f5f3ff;
 	--accent-ink: #4c1d95;
@@ -61,6 +62,7 @@
 	--border: #20202d;
 	--border-strong: #2c2c3d;
 	--accent: #a78bfa;
+	--accent-fg: #000000;
 	--accent-2: #f472b6;
 	--accent-soft: #1a1530;
 	--accent-ink: #c4b5fd;
@@ -89,6 +91,7 @@
 	--color-border: var(--border);
 	--color-border-strong: var(--border-strong);
 	--color-accent: var(--accent);
+	--color-accent-fg: var(--accent-fg);
 	--color-accent-2: var(--accent-2);
 	--color-accent-soft: var(--accent-soft);
 	--color-accent-ink: var(--accent-ink);
@@ -131,7 +134,7 @@
 }
 
 @utility heading-2 {
-	@apply text-5xl leading-14 font-bold;
+	@apply text-4xl leading-14 font-bold;
 }
 
 @utility heading-3 {
@@ -178,26 +181,105 @@ body {
 	@apply bg-bg text-fg;
 }
 
-h1 {
+h1,
+.heading-1 {
 	@apply heading-1;
 }
 
-h2 {
+h2,
+.heading-2 {
 	@apply heading-2;
 }
 
-h3 {
+h3,
+.heading-3 {
 	@apply heading-3;
 }
 
-h4 {
+h4,
+.heading-4 {
 	@apply heading-4;
 }
 
-h5 {
+h5,
+.heading-5 {
 	@apply heading-5;
 }
 
-p {
+p,
+.paragraph {
 	@apply paragraph;
+}
+
+/* This is used to rotate the piston */
+@keyframes rotate-360 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@utility animate-rotate-360 {
+	animation: rotate-360 5s infinite linear;
+	transform-origin: 18% 75%;
+	animation-delay: 2.5s;
+	display: inline-block;
+}
+
+@keyframes dash {
+	from {
+		stroke-dashoffset: 1000;
+	}
+}
+
+@utility animated-trend-line {
+	stroke-dasharray: 1000;
+	animation: dash 5s linear forwards infinite;
+}
+
+@utility animated-tag {
+	stroke-dasharray: 1000;
+	animation: dash 7s linear forwards infinite;
+}
+
+@keyframes move-left {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-15px);
+	}
+	100% {
+		transform: translateX(-15px);
+	}
+}
+
+@keyframes move-right {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(15px);
+	}
+	100% {
+		transform: translateX(15px);
+	}
+}
+
+@utility move-left {
+	animation: move-left 2s linear forwards infinite;
+	animation-delay: 2.5s;
+}
+
+@utility move-right {
+	animation: move-right 2s linear forwards infinite;
+	animation-delay: 2.5s;
 }
