@@ -6,6 +6,7 @@ import ThemeSwitcher from './theme-switcher/theme-switcher.svelte';
 import HeroSection from './hero-section/hero-section.svelte';
 import FeaturesSection from './features-section/features-section.svelte';
 import PricingSection from './pricing-section/pricing-section.svelte';
+import Seo from './seo/seo.svelte';
 
 export {
 	Footer,
@@ -15,5 +16,6 @@ export {
 	ThemeSwitcher,
 	HeroSection,
 	FeaturesSection,
-	PricingSection
+	PricingSection,
+	Seo
 };
