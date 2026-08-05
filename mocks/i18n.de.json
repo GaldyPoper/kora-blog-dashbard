@@ -66,6 +66,7 @@
 	"login.password": "Passwort",
 	"login.submit": "Anmelden",
 	"login.error": "Ungültige E-Mail oder Passwort.",
+	"login.forgot.password": "Passwort vergessen?",
 	"dashboard.title": "Dashboard",
 	"dashboard.items.title": "Kampagnen",
 	"dashboard.items.new": "Neue Kampagne",

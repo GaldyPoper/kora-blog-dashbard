@@ -66,6 +66,7 @@
 	"login.password": "Password",
 	"login.submit": "Sign in",
 	"login.error": "Invalid email or password.",
+	"login.forgot.password": "Forgot password?",
 	"dashboard.title": "Dashboard",
 	"dashboard.items.title": "Campaigns",
 	"dashboard.items.new": "New campaign",

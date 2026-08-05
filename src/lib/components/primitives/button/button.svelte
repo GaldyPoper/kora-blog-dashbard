@@ -33,7 +33,7 @@
 	const classes: Record<'shared' | ButtonVariant | ButtonSize, string> = {
 		shared: 'rounded-lg font-bold uppercase shadow-lg',
 		primary: 'bg-accent text-accent-fg',
-		outline: 'border-2 border-accent',
+		outline: 'border border-accent',
 		small: 'text-sm px-2 py-1',
 		medium: 'text-base px-4 py-2',
 		large: 'text-lg px-6 py-3'
