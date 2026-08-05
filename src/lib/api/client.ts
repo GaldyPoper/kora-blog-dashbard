@@ -2,9 +2,11 @@ import { z } from 'zod';
 import {
 	itemSchema,
 	userSchema,
+	postSchema,
 	paginatedPostsSchema,
 	type Item,
 	type User,
+	type Post,
 	type PaginatedPosts
 } from '$lib/schemas';
 
@@ -60,6 +62,10 @@ export const getPosts = (
 	});
 	return fetchValidated(`/api/posts?${search}`, paginatedPostsSchema, fetchFn);
 };
+
+/** Fetches a single post by slug. Throws (404 → error) if it does not exist. */
+export const getPostBySlug = (slug: string, fetchFn?: typeof fetch): Promise<Post> =>
+	fetchValidated(`/api/posts/${encodeURIComponent(slug)}`, postSchema, fetchFn);
 
 export const getItems = (fetchFn?: typeof fetch): Promise<Item[]> =>
 	fetchCollection('/api/items', itemSchema, fetchFn);

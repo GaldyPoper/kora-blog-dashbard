@@ -7,6 +7,9 @@ import HeroSection from './hero-section/hero-section.svelte';
 import FeaturesSection from './features-section/features-section.svelte';
 import PricingSection from './pricing-section/pricing-section.svelte';
 import Seo from './seo/seo.svelte';
+import ArticleMeta from './article-meta/article-meta.svelte';
+import TagsContainer from './tags-container/tags-container.svelte';
+import PostBackground from './post-background/post-background.svelte';
 
 export {
 	Footer,
@@ -17,5 +20,8 @@ export {
 	HeroSection,
 	FeaturesSection,
 	PricingSection,
-	Seo
+	Seo,
+	ArticleMeta,
+	TagsContainer,
+	PostBackground
 };

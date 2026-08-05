@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { createTranslator } from '$lib/i18n';
-	import { Avatar, Badge, FormattedDate, Pagination } from '$lib/components/primitives';
+	import { Pagination } from '$lib/components/primitives';
+	import { ArticleMeta, PostBackground, Seo, TagsContainer } from '$lib/components/composites';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -10,6 +12,13 @@
 
 	const totalPages = $derived(Math.max(1, Math.ceil(data.total / data.perPage)));
 </script>
+
+<Seo
+	title={t('seo.blog.title')}
+	description={t('seo.blog.description')}
+	image="/og.png"
+	imageAlt={t('seo.blog.imageAlt')}
+/>
 
 <section class="kora-grid-container py-10">
 	<div class="kora-container-inner">
@@ -21,33 +30,27 @@
 					{@const content = post.translations[data.locale] ?? post.translations.en}
 					<li>
 						<article
-							class="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-soft transition-colors hover:border-border-strong"
+							class="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-bg-soft transition-colors focus-within:border-border-strong hover:border-border-strong"
 						>
-							<div
-								class="h-36 w-full"
-								style="background-image: linear-gradient(135deg, {post.coverColor}, color-mix(in oklab, {post.coverColor}, #000 55%));"
-							></div>
+							<PostBackground color={post.coverColor} class="h-36" />
 
 							<div class="flex flex-1 flex-col gap-4 p-6">
-								<h2 class="heading-5">{content?.title}</h2>
-								<p class="line-clamp-3">{content?.excerpt}</p>
-
-								{#if post.tags.length}
-									<ul class="flex flex-wrap gap-2">
-										{#each post.tags as tag (tag)}
-											<Badge variant="ghost" size="small">{tag}</Badge>
-										{/each}
-									</ul>
-								{/if}
-
-								<div class="mt-auto flex items-center gap-2 pt-2 paragraph-s text-muted">
-									<Avatar name={post.author.name} color={post.author.avatarColor} />
-									<span class="text-fg-2">{post.author.name}</span>
-									<span aria-hidden="true">·</span>
-									<FormattedDate date={post.publishedAt} />
-									<span aria-hidden="true">·</span>
-									<span>{t('blog.readingTime', { minutes: post.readingTimeMinutes })}</span>
-								</div>
+								<h2 class="heading-5">
+									<a
+										href={resolve(`/${data.locale}/blog/${post.slug}`)}
+										class="after:absolute after:inset-0 after:content-[''] hover:text-accent focus-visible:text-accent"
+									>
+										{content.title}
+									</a>
+								</h2>
+								<p>{content.excerpt}</p>
+								<TagsContainer tags={post.tags} />
+								<ArticleMeta
+									author={post.author}
+									publishedAt={post.publishedAt}
+									readingTimeMinutes={post.readingTimeMinutes}
+									class="mt-auto pt-2"
+								/>
 							</div>
 						</article>
 					</li>

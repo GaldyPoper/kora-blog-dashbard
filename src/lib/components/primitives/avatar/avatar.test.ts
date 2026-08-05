@@ -20,7 +20,19 @@ describe('Avatar unit tests', () => {
 
 	it('falls back to the accent color when no color is given', () => {
 		const { getByText } = render(Avatar, { name: 'Anna Becker' });
-		expect(getByText('AB').getAttribute('style')).toContain('var(--color-accent)');
+		const style = getByText('AB').getAttribute('style') ?? '';
+		expect(style).toContain('background-color: var(--color-accent)');
+		// The design system's on-accent token keeps the initials legible in both themes.
+		expect(style).toContain('color: var(--color-accent-fg)');
+	});
+
+	it('derives a contrasting ink from the provided color', () => {
+		// jsdom normalizes hex to rgb().
+		const bright = render(Avatar, { name: 'Anna Becker', color: '#f59e0b' });
+		expect(bright.getByText('AB').style.color).toBe('rgb(0, 0, 0)'); // black on bright amber
+
+		const dark = render(Avatar, { name: 'Nadia Idris', color: '#1e1b4b' });
+		expect(dark.getByText('NI').style.color).toBe('rgb(255, 255, 255)'); // white on dark indigo
 	});
 
 	it('merges a custom class and forwards attributes onto the root', () => {
