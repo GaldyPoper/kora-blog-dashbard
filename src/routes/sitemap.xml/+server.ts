@@ -1,7 +1,11 @@
 import { locales, defaultLocale, localizePath } from '$lib/i18n';
+import { getPosts } from '$lib/server/data';
 import type { RequestHandler } from './$types';
 
-const paths = [''];
+function sitemapPaths(): string[] {
+	const postPaths = getPosts().map((post) => `/blog/${post.slug}`);
+	return ['', '/blog', ...postPaths];
+}
 
 function alternateLinks(origin: string, path: string): string[] {
 	const links = locales.map(
@@ -22,7 +26,7 @@ export const GET: RequestHandler = ({ url }) => {
 		'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
 	];
 
-	for (const path of paths) {
+	for (const path of sitemapPaths()) {
 		for (const locale of locales) {
 			lines.push(
 				'  <url>',
