@@ -78,6 +78,8 @@
 	"seo.search.imageAlt": "Search — the Kora blog.",
 	"seo.login.title": "Sign in — Kora",
 	"seo.login.description": "Sign in to your Kora account.",
+	"seo.dashboard.title": "Dashboard — Kora",
+	"seo.dashboard.description": "Manage your Kora campaigns.",
 	"search.title": "Search",
 	"search.submit": "Search",
 	"search.placeholder": "Search posts…",
