@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"packageManager": "pnpm@10.3.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -13,7 +14,9 @@
 		"typecheck": "tsc --noEmit",
 		"test": "vitest run",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"size": "node scripts/check-bundle-size.mjs",
+		"lhci": "lhci autorun"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte}": [
@@ -26,6 +29,7 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
+		"@lhci/cli": "^0.15.1",
 		"@sveltejs/adapter-auto": "^7.0.1",
 		"@sveltejs/adapter-netlify": "^6.0.4",
 		"@sveltejs/kit": "^2.63.0",
