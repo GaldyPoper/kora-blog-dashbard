@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/primitives';
+	import { Seo } from '$lib/components/composites';
 	import { createTranslator } from '$lib/i18n';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
@@ -31,6 +32,8 @@
 		/>
 	</div>
 {/snippet}
+
+<Seo title={t('seo.login.title')} description={t('seo.login.description')} noindex />
 
 <div class="flex items-center justify-center py-10">
 	<section

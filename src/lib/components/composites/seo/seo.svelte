@@ -12,6 +12,8 @@
 		imageAlt?: string;
 		type?: OgType;
 		siteName?: string;
+		/** Emit `robots: noindex` — for pages that shouldn't be indexed (e.g. search). */
+		noindex?: boolean;
 	}
 
 	let {
@@ -20,7 +22,8 @@
 		image,
 		imageAlt,
 		type = 'website',
-		siteName = 'Kora'
+		siteName = 'Kora',
+		noindex = false
 	}: SeoProps = $props();
 
 	const OG_LOCALES: Record<Locale, string> = { en: 'en_US', de: 'de_DE' };
@@ -44,6 +47,7 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="description" content={description} />
+	{#if noindex}<meta name="robots" content="noindex, follow" />{/if}
 
 	<meta property="og:type" content={type} />
 	<meta property="og:site_name" content={siteName} />

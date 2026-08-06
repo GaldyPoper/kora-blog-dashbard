@@ -7,8 +7,10 @@ import {
 	type Item,
 	type User,
 	type Post,
-	type PaginatedPosts
+	type PaginatedPosts,
+	type Locale
 } from '$lib/schemas';
+import type { PostSort } from '$lib/search';
 
 const POSTS_PER_PAGE = 6;
 
@@ -48,22 +50,28 @@ const fetchCollection = <T extends z.ZodType>(
 	fetchFn?: typeof fetch
 ): Promise<z.infer<T>[]> => fetchValidated(endpoint, z.array(schema), fetchFn);
 
-/**
- * Each accessor optionally takes a `fetch` implementation — pass SvelteKit's
- * `fetch` from a `load` function so relative URLs resolve on the server too.
- */
 export const getPosts = (
-	params: { page?: number; perPage?: number } = {},
+	params: {
+		page?: number;
+		perPage?: number;
+		q?: string;
+		tag?: string | null;
+		sort?: PostSort;
+		locale?: Locale;
+	} = {},
 	fetchFn?: typeof fetch
 ): Promise<PaginatedPosts> => {
 	const search = new URLSearchParams({
 		page: String(params.page ?? 1),
 		perPage: String(params.perPage ?? POSTS_PER_PAGE)
 	});
+	if (params.q) search.set('q', params.q);
+	if (params.tag) search.set('tag', params.tag);
+	if (params.sort) search.set('sort', params.sort);
+	if (params.locale) search.set('locale', params.locale);
 	return fetchValidated(`/api/posts?${search}`, paginatedPostsSchema, fetchFn);
 };
 
-/** Fetches a single post by slug. Throws (404 → error) if it does not exist. */
 export const getPostBySlug = (slug: string, fetchFn?: typeof fetch): Promise<Post> =>
 	fetchValidated(`/api/posts/${encodeURIComponent(slug)}`, postSchema, fetchFn);
 

@@ -16,14 +16,23 @@
 
 	const hasPrev = $derived(page > 1);
 	const hasNext = $derived(page < totalPages);
+
+	function stepHref(to: number): string {
+		// A throwaway local for building the href string — not reactive component
+		// state, so the plain URLSearchParams is appropriate here.
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const params = new URLSearchParams(appState.url.searchParams);
+		params.set('page', String(to));
+		return `?${params}`;
+	}
 </script>
 
 {#snippet step(to: number, label: string, enabled: boolean)}
 	{#if enabled}
-		<!-- eslint-disable svelte/no-navigation-without-resolve -- same-page query link (`?page=N`) is base-safe as a relative URL;  -->
+		<!-- eslint-disable svelte/no-navigation-without-resolve -- same-page query link (`?page=N…`) is base-safe as a relative URL;  -->
 		<a
 			class="rounded-lg border border-border px-3 py-1.5 text-fg-2 transition-colors hover:border-border-strong"
-			href={`?page=${to}`}>{label}</a
+			href={stepHref(to)}>{label}</a
 		>
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	{:else}

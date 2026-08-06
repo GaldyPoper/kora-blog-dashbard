@@ -66,4 +66,16 @@ describe('Seo unit tests', () => {
 		render(Seo, { ...base, image: 'https://cdn.example/hero.jpg' });
 		expect(meta('meta[property="og:image"]')).toBe('https://cdn.example/hero.jpg');
 	});
+
+	it('omits the robots meta by default and emits noindex when asked', () => {
+		render(Seo, base);
+		expect(head().querySelector('meta[name="robots"]')).toBeNull();
+
+		head()
+			.querySelectorAll('title, meta')
+			.forEach((node) => node.remove());
+
+		render(Seo, { ...base, noindex: true });
+		expect(meta('meta[name="robots"]')).toBe('noindex, follow');
+	});
 });

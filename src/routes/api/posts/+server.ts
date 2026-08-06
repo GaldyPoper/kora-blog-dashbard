@@ -1,5 +1,7 @@
 import { json } from '@sveltejs/kit';
+import { localeShema } from '$lib/schemas';
 import { getPosts } from '$lib/server/data';
+import { parsePostQuery, queryPosts } from '$lib/search';
 import type { RequestHandler } from './$types';
 
 const POSTS_PER_PAGE = 6;
@@ -11,16 +13,24 @@ function positiveInt(value: string | null, fallback: number): number {
 }
 
 export const GET: RequestHandler = ({ url, setHeaders }) => {
-	const all = getPosts();
-	const total = all.length;
+	// Filtering (?q, ?tag), sorting (?sort) and pagination (?page, ?perPage) all
+	// happen here on the server, so the client only ever makes a parametrized
+	// request — no shipping the full dataset to filter in the browser.
+	const { q, tag, sort, page } = parsePostQuery(url.searchParams);
 	const perPage = positiveInt(url.searchParams.get('perPage'), POSTS_PER_PAGE);
-	const page = positiveInt(url.searchParams.get('page'), 1);
+	// Text search matches the requested locale's translation; defaults to `en`.
+	const locale = localeShema.catch('en').parse(url.searchParams.get('locale'));
+
+	// With no ?q/?tag this is just the full list sorted (newest by default) — i.e.
+	// the plain blog listing — so this one endpoint serves both list and search.
+	const matched = queryPosts(getPosts(), { q, tag, sort, locale });
+	const total = matched.length;
 
 	const start = (page - 1) * perPage;
-	const items = all.slice(start, start + perPage);
+	const items = matched.slice(start, start + perPage);
 
-	// Same 60-minute CDN edge cache as the blog page; keyed per ?page/?perPage so
-	// client-side navigations (which refetch this endpoint) are edge-served too.
+	// 60-minute CDN edge cache, keyed by the full query string (filters/sort/page
+	// included) so client-side navigations are edge-served too.
 	setHeaders({
 		'cache-control': 'public, max-age=0, must-revalidate',
 		'netlify-cdn-cache-control': 'public, durable, s-maxage=3600, stale-while-revalidate=60'
