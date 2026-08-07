@@ -12,6 +12,8 @@ import ArticleMeta from './article-meta/article-meta.svelte';
 import ArticlesList from './articles-list/articles-list.svelte';
 import TagsContainer from './tags-container/tags-container.svelte';
 import PostBackground from './post-background/post-background.svelte';
+import StatusPill from './status-pill/status-pill.svelte';
+import MultiSelect from './multi-select/multi-select.svelte';
 
 export {
 	Footer,
@@ -27,5 +29,7 @@ export {
 	ArticleMeta,
 	ArticlesList,
 	TagsContainer,
-	PostBackground
+	PostBackground,
+	StatusPill,
+	MultiSelect
 };

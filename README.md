@@ -8,6 +8,10 @@ TypeScript; deployed on Netlify.
 **Live URL:** https://kora-take-home-test.netlify.app/en
 **Repo:** https://github.com/GaldyPoper/kora-blog-dashbard
 
+> **Best viewed on desktop.** Responsive/mobile layout was out of scope for this take-home, so the
+> app is built for desktop widths — the dashboard table especially. (The Lighthouse budgets run on a
+> mobile profile, but that's a performance/throttling target, not a claim of a mobile-tuned layout.)
+
 ## Getting started
 
 Requires **Node 22** and **pnpm** (`corepack enable` will provide it; the repo pins `pnpm@10.3.0`).
@@ -37,27 +41,55 @@ insecure dev fallback is used) and **required in production**. See [.env.example
 Locale is a required URL segment (`/en`, `/de`); `/` 307-redirects to the default locale. Each
 route picks its rendering deliberately:
 
-| Route                                | Rendering                        | Why                                                               |
-| ------------------------------------ | -------------------------------- | ----------------------------------------------------------------- |
-| `/[lang]` (home)                     | **Prerendered (SSG)**            | Static marketing content, best possible LCP.                      |
-| `/[lang]/blog/[slug]`                | **SSG w/ `prerender = 'auto'`**  | Known posts prerendered via `entries`; SSR fallback.              |
-| `/[lang]/blog`                       | **SSR**, CDN-cached 60 min       | Paginated list; page/tag in the URL, cheap to cache.              |
-| `/[lang]/search`                     | **SSR**                          | All filter/sort state round-trips through the URL.                |
-| `/[lang]/dashboard`                  | **CSR (`ssr = false`), noindex** | Interactive user tool, not a traffic driver; guarded server-side. |
-| `/[lang]/login`, `/logout`, `/api/*` | **SSR / Node endpoints**         | Read/write endpoints and auth.                                    |
+| Route                                | Rendering                        | Why                                                                         |
+| ------------------------------------ | -------------------------------- | --------------------------------------------------------------------------- |
+| `/[lang]` (home)                     | **Prerendered (SSG)**            | Static marketing content, best possible LCP.                                |
+| `/[lang]/blog/[slug]`                | **SSG w/ `prerender = 'auto'`**  | Known posts prerendered via `entries`; SSR fallback.                        |
+| `/[lang]/blog`                       | **SSR**, CDN-cached 60 min       | Paginated list; page/tag in the URL, cheap to cache.                        |
+| `/[lang]/search`                     | **SSR**                          | All filter/sort state round-trips through the URL.                          |
+| `/[lang]/dashboard`                  | **CSR (`ssr = false`), noindex** | Interactive campaigns table; guarded server-side, data fetched client-side. |
+| `/[lang]/login`, `/logout`, `/api/*` | **SSR / Node endpoints**         | Read/write endpoints and auth.                                              |
+
+## State management
+
+The approach is **Svelte 5 runes, no global stores**, in three consistent layers:
+
+- **Local UI state → runes in the component.** `$state` / `$derived` / `$effect`, e.g. the
+  `MultiSelect` search/focus state.
+- **Reusable stateful logic → runes classes in `.svelte.ts` modules.** e.g.
+  [`Listbox`](src/lib/state/listbox.svelte.ts) encapsulates the open/active-option state shared by
+  popup widgets — it composes just like a component's own `$state`, but is reusable and unit-testable.
+- **Shareable view state → the URL, via tested codecs.** Filters, sort and pagination live in the
+  query string (`src/lib/search`, `src/lib/dashboard/items`) and are the single source of truth — no
+  client store mirrors them, so a view is always shareable and back/forward always works.
+
+Non-reactive shared helpers stay plain modules (e.g. [`useId`](src/lib/utils/use-id.ts) — an id is
+assigned once and never changes, so making it reactive would be the wrong tool). There are **no
+Svelte stores and no global mutable singletons**; ambient app data comes from `page` (`$app/state`),
+and `setContext`/`getContext` is reserved for genuinely tree-scoped needs (none so far). The payoff:
+fine-grained reactivity without store boilerplate, and no class of bug where a store drifts out of
+sync with the address bar.
 
 ## Worth highlighting
 
 - **Zod as the trust boundary.** Mock JSON is parsed through schemas in `src/lib/server/data.ts`
   before anything is served; the same schemas type the `/api/*` endpoints — no hand-typed shapes.
-- **URL as state.** Search filters/sort are encoded/decoded through a tested codec
-  (`src/lib/search/`), so results are shareable and back/forward works.
+- **URL as state.** Both the blog search (`src/lib/search/`) and the dashboard table
+  (`src/lib/dashboard/items/`) encode/decode all filter/sort/pagination state through tested
+  codecs, so every view is shareable and back/forward works.
+- **Dashboard campaigns table.** Server-side pagination, sorting and multi-facet filtering over
+  220 rows, URL-synced; data fetched client-side from a guarded `/api/items` endpoint, with a
+  server-side auth guard (hook + `+page.server.ts`) and designed loading / empty / error states.
+- **Accessible multi-select, from scratch.** `MultiSelect`
+  (`src/lib/components/composites/multi-select/`) is a listbox combobox — full ARIA
+  (`listbox`/`option`, `aria-multiselectable`, `aria-selected`), roving-focus keyboard nav,
+  type-ahead, and Escape / outside-click dismissal. No library; it drives the table's facets.
 - **i18n in the routing layer.** A `[lang=lang]` param matcher validates the locale; canonical +
   `hreflang` alternates are emitted in the layout, and the sitemap is locale-aware.
 - **Auth is real.** HMAC-signed cookie with constant-time verification and a `handle` hook that
   populates `event.locals.user`; the dashboard guards server-side.
 - **Tokenized theming.** Semantic CSS-variable tokens drive light/dark; `ThemeSwitcher` toggles them.
-- **Component split** with colocated unit tests — `primitives/` and `composites/` (~275 Vitest tests).
+- **Component split** with colocated unit tests — `primitives/` and `composites/` (~303 Vitest tests).
 - **CI enforces performance budgets** (not just measures them): Lighthouse mobile (Moto G Power) —
   LCP < 2 s, CLS < 0.1, TBT < 200 ms (lab proxy for INP), and PWA/A11y/SEO/Best-Practices ≥ 95 — plus
   an initial-route JS budget (≤ 88 KB gzip public, ≤ 150 KB dashboard). See
@@ -67,13 +99,13 @@ route picks its rendering deliberately:
 
 Deliberate cuts against the brief, in rough priority order:
 
-- **`/dashboard/items` data table** — the 220-row server-side paginated/sorted/multi-facet table
-  with inline edit, optimistic UI + rollback, and streamed-SSR skeleton. The largest omission; the
-  dashboard is currently a guarded stub. Data layer and schemas exist, the table UI does not.
+- **Optimistic inline edit + rollback** — the campaigns table does the full read path
+  (filter/sort/paginate, URL-synced, guarded), but not the write path: inline cell editing with
+  optimistic UI and rollback on failure. The remaining half of the brief's dashboard table.
+- **Streamed SSR** — intentionally traded away. The dashboard is a CSR user tool (not a traffic
+  driver), so its data is fetched client-side rather than streamed from a server `load`.
 - **Explicit edge/Node runtime split** — routes run on Node with CDN edge _caching_; no route is
-  pinned to an edge runtime as the brief asks.
-- **Streamed SSR** (`load` returning unawaited promises) — not implemented.
-- **Complex accessible composite** (Dialog / Combobox / Menu with focus trap + full ARIA) — not built.
+  pinned to an edge runtime. Auth touches `node:crypto`, so those routes are Node-bound regardless.
 - **E2E & a11y automation** — no Playwright flows, `@axe-core/playwright`, or visual-regression
   snapshots; coverage is Vitest unit tests only.
 - **Observability** — no `web-vitals` RUM beacon and no client error-reporting/Sentry stub.
